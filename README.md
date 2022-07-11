@@ -22,7 +22,7 @@ Install
 1. Clone onto your laptop:
 
 ```bash
-git clone git://github.com/erenjax/dotfiles.git ~/dotfiles
+git clone git://github.com/johnshoeman/dotfiles.git ~/dotfiles
 ```
 
 2. Run the setup script:
