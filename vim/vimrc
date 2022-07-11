@@ -22,6 +22,7 @@ endfunction
 command!  -nargs=1 UnPlug call s:UnPlug(<args>)
 
 let g:has_async = v:version >= 800 || has('nvim')
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 
 call plug#begin('~/.vim/bundle')
 
@@ -32,8 +33,11 @@ Plug 'neoclide/coc.nvim', {'branch': 'release' }
 
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
+Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
+Plug 'mileszs/ack.vim'
 Plug 'ctrlpvim/ctrlp.vim'
+Plug 'preservim/nerdtree'
 
 Plug '/usr/local/opt/fzf/'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -42,6 +46,8 @@ Plug 'junegunn/fzf.vim'
 Plug 'vim-test/vim-test'
 Plug 'pbrisbin/vim-mkdir'
 Plug 'slim-template/vim-slim'
+
+Plug 'itchyny/lightline.vim'
 
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
@@ -70,6 +76,15 @@ call plug#end()
 
 "Vim Config
 "----------
+
+" autoformat with Prettier
+
+let g:prettier#autoformat = 1
+let g:prettier#autoformat_require_pragma = 0
+
+" force Prettier to be async
+
+let g:prettier#exec_cmd_async = 1
 
 "General
 "-------
@@ -171,23 +186,40 @@ set list listchars=tab:»·,trail:·,nbsp:·
 set nojoinspaces
 
 "Use The Silver Searcher https://github.com/ggreer/the_silver_searcher
+"
+" if executable('ag')
+"   " Use Ag over Grep
+"   set grepprg=ag\ --nogroup\ --nocolor
+"
+"   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+"   let g:ctrlp_user_command = 'ag --literal --files-with-matches --nocolor --hidden -g "" %s'
+"
+"   " ag is fast enough that CtrlP doesn't need to cache
+"   let g:ctrlp_use_caching = 0
+"
+"   if !exists(":Ag")
+"     command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
+"     nnoremap \ :Ag<SPACE>
+"   endif
+" endif
 
-if executable('ag')
-  " Use Ag over Grep
-  set grepprg=ag\ --nogroup\ --nocolor
+"Ack searcher
 
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag --literal --files-with-matches --nocolor --hidden -g "" %s'
+if executable('ack')
+  " Use Ack over Grep
+  set grepprg=ack\ --nogroup\ --nocolor
 
-  " ag is fast enough that CtrlP doesn't need to cache
+  " Use ack in CtrlP for listing files. 
+  let g:ctrlp_user_command = 'ack --files-with-matches "" %s'
+
+  " Ack is fast enough that CtrlP doesn't need to cache
   let g:ctrlp_use_caching = 0
 
-  if !exists(":Ag")
-    command -nargs=+ -complete=file -bar Ag silent! grep! <args>|cwindow|redraw!
-    nnoremap \ :Ag<SPACE>
+  if !exists(":Ack")
+    command -nargs=+ -complete=file -bar Ack silent! grep! <args>|cwindow|redraw!
+    nnoremap \ :Ack<SPACE>
   endif
 endif
-
 
 "Make it obvious where 80 characters is
 set textwidth=80

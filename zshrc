@@ -67,6 +67,8 @@ PROMPT='%F{5}[%F{2}%n%F{5}] %F{3}%3~ ${vcs_info_msg_0_} %f%# '
 export VISUAL=nvim
 export EDITOR="$VISUAL"
 
+export TERM="xterm-kitty"
+
 # aliases
 [[ -f ~/.aliases ]] && source ~/.aliases
 
